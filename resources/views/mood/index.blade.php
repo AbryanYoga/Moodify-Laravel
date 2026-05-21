@@ -14,6 +14,8 @@
 
 <body>
 
+<div class="waveform-bg"></div>
+
 <div class="container">
 
     <nav class="navbar">
@@ -133,11 +135,23 @@
     <div class="mood-grid">
 
         @forelse ($moods as $mood)
+        @php
+            $emoji = '🎧';
+            $g = strtolower($mood->genre);
+            if(str_contains($g, 'pop')) $emoji = '✨';
+            elseif(str_contains($g, 'rock')) $emoji = '🔥';
+            elseif(str_contains($g, 'jazz')) $emoji = '🎷';
+            elseif(str_contains($g, 'lo-fi') || str_contains($g, 'santai')) $emoji = '☕';
+            elseif(str_contains($g, 'sedih') || str_contains($g, 'sad')) $emoji = '🌧️';
+            elseif(str_contains($g, 'semangat') || str_contains($g, 'hype')) $emoji = '⚡';
+        @endphp
 
         <a href="/mood/{{ $mood->id }}"
            class="mood-card">
 
             <div class="card-img-wrap">
+
+                <div class="mood-emoji">{{ $emoji }}</div>
 
                 <img src="{{ asset('images/'.$mood->image) }}"
                      alt="{{ $mood->nama }}">

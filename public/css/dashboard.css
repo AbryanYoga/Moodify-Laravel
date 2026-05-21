@@ -1,0 +1,197 @@
+/* ========================================================
+   DASHBOARD STYLESHEET (Moodify Premium UI)
+   ======================================================== */
+
+.dashboard-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 40px;
+    animation: fadeInDown 0.6s ease-out;
+}
+
+/* STAT CARDS */
+.stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(200, 180, 250, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+    transition: all 0.5s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--accent);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2), 0 0 15px rgba(200, 180, 250, 0.05);
+}
+
+.stat-card:hover::before {
+    transform: scale(1.2);
+}
+
+html.light .stat-card {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+html.light .stat-card:hover {
+    box-shadow: 0 12px 30px rgba(124, 92, 191, 0.08);
+}
+
+.stat-label {
+    font-size: 13.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.stat-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 48px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.1;
+    background: linear-gradient(135deg, var(--text) 50%, var(--muted) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* CHART CONTAINER */
+.chart-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    transition: all 0.3s;
+}
+
+.chart-card:hover {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+html.light .chart-card {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.chart-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chart-title::before {
+    content: '📊';
+    font-size: 18px;
+}
+
+/* RECENT FAVORITES */
+.recent-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+}
+
+html.light .recent-card {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.recent-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.recent-title::before {
+    content: '🎵';
+    font-size: 18px;
+}
+
+.recent-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.recent-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    transition: all 0.25s;
+}
+
+.recent-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--accent);
+    transform: translateX(4px);
+}
+
+html.light .recent-item {
+    background: rgba(0, 0, 0, 0.01);
+}
+
+html.light .recent-item:hover {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.recent-icon {
+    font-size: 16px;
+    color: var(--accent2);
+    animation: bounceSlow 2s infinite ease-in-out;
+}
+
+.recent-name {
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--text);
+}
+
+@keyframes bounceSlow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
