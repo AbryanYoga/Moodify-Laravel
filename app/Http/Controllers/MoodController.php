@@ -29,67 +29,60 @@ class MoodController extends Controller
     public function show($id)
     {
         $mood = Mood::findOrFail($id);
+        $tracks = [];
 
-        $playlists = [];
-
-        if ($mood->genre == 'pop') {
-
-            $playlists = [
-                'Happy Hits',
-                'Pop Rising',
-                'Mood Booster'
+        if (Auth::check() && Auth::user()->spotify_token) {
+            $token = Auth::user()->spotify_token;
+            
+            // Bersihkan whitespace/newline pada genre
+            $cleanGenre = trim(strtolower($mood->genre));
+            
+            // Map ke query yang terbukti sukses di Spotify
+            $genreMap = [
+                'pop' => 'genre:pop',
+                'acoustic' => 'genre:acoustic',
+                'lofi' => 'lofi study',
+                'instrumental' => 'genre:instrumental',
+                'sad pop' => 'sad pop',
+                'edm' => 'genre:edm'
             ];
+            
+            $searchQuery = isset($genreMap[$cleanGenre]) ? $genreMap[$cleanGenre] : $cleanGenre;
+            $query = urlencode($searchQuery);
 
-        } elseif ($mood->genre == 'acoustic') {
+            $response = \Illuminate\Support\Facades\Http::withToken($token)
+                ->get("https://api.spotify.com/v1/search?q={$query}&type=track&limit=12");
 
-            $playlists = [
-                'Sad Acoustic',
-                'Acoustic Chill',
-                'Late Night Songs'
-            ];
-
-        } elseif ($mood->genre == 'lofi') {
-
-            $playlists = [
-                'Lofi Study',
-                'Chill Beats',
-                'Deep Focus'
-            ];
-
-        } elseif ($mood->genre == 'instrumental') {
-
-            $playlists = [
-                'Focus Flow',
-                'Deep Concentration',
-                'Study Session'
-            ];
-
-        } elseif ($mood->genre == 'sad pop') {
-
-            $playlists = [
-                'Broken Heart',
-                'Sad Vibes',
-                'Midnight Tears'
-            ];
-
-        } elseif ($mood->genre == 'edm') {
-
-            $playlists = [
-                'EDM Party',
-                'Workout Energy',
-                'Festival Hits'
-            ];
-
-        } else {
-
-            $playlists = [
-                'Daily Mix',
-                'Random Playlist'
-            ];
+            if ($response->successful() && isset($response->json()['tracks']['items'])) {
+                $tracks = $response->json()['tracks']['items'];
+            } else {
+                // Jika gagal (401 Unauthorized, 400 Bad Request, dll), kemungkinan token tidak valid/expired.
+                // Logout paksa agar user login lagi dan mendapatkan token baru yang fresh.
+                Auth::logout();
+                return redirect('/auth/spotify')->with('error', 'Sesi Spotify tidak valid atau telah habis, silakan login kembali.');
+            }
         }
 
-        return view('mood.show',
-            compact('mood', 'playlists'));
+        return view('mood.show', compact('mood', 'tracks'));
+    }
+
+    public function saveTrack(Request $request)
+    {
+        if (!Auth::check() || !Auth::user()->spotify_token) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        }
+
+        $trackId = $request->track_id;
+        $token = Auth::user()->spotify_token;
+
+        $response = \Illuminate\Support\Facades\Http::withToken($token)
+            ->put("https://api.spotify.com/v1/me/tracks?ids={$trackId}");
+
+        if ($response->successful()) {
+            return response()->json(['success' => true, 'message' => 'Lagu berhasil disimpan ke Spotify']);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Gagal menyimpan lagu'], 400);
     }
 
     public function favorite(Request $request)
@@ -155,7 +148,8 @@ class MoodController extends Controller
     return Socialite::driver('spotify')
         ->scopes([
             'user-read-email',
-            'user-read-private'
+            'user-read-private',
+            'user-library-modify'
         ])
         ->redirect();
 }

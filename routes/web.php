@@ -55,6 +55,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/favorite', [MoodController::class, 'favorite']);
 
     Route::get('/favorite', [MoodController::class, 'favoriteList']);
+
+    Route::post('/spotify/save-track', [MoodController::class, 'saveTrack']);
 });
 
 Route::post('/favorite',[MoodController::class, 'favorite']);
