@@ -151,18 +151,37 @@ class MoodController extends Controller
     }
 
     public function redirectSpotify()
-    {
-        return Socialite::driver('spotify')
-            ->stateless()
-            ->redirect();
-    }
+{
+    return Socialite::driver('spotify')
+        ->scopes([
+            'user-read-email',
+            'user-read-private'
+        ])
+        ->redirect();
+}
 
-    public function callbackSpotify()
-    {
-        $spotifyUser = Socialite::driver('spotify')
-            ->stateless()
-            ->user();
+public function callbackSpotify()
+{
+    $spotifyUser = Socialite::driver('spotify')->user();
 
-        dd($spotifyUser);
-    }
+    $email = $spotifyUser->email
+        ?? $spotifyUser->id . '@spotify.com';
+
+    $user = User::updateOrCreate(
+        [
+            'email' => $email
+        ],
+        [
+            'name' => $spotifyUser->name ?? 'Spotify User',
+            'spotify_id' => $spotifyUser->id,
+            'avatar' => $spotifyUser->avatar,
+            'spotify_token' => $spotifyUser->token,
+            'password' => bcrypt(\Illuminate\Support\Str::random(24))
+        ]
+    );
+
+    \Illuminate\Support\Facades\Auth::login($user);
+
+    return redirect('/mood');
+}
 }
