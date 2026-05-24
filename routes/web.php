@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MoodController;
 use App\Http\Controllers\SpotifyController;
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\AdminMoodController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,15 +51,25 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::post('/favorite', [MoodController::class, 'favorite']);
-    Route::get('/favorite', [MoodController::class, 'favoriteList']);
-    Route::delete('/favorite/{id}', [MoodController::class, 'deleteFavorite']);
+    // Favorite (Local)
+    Route::get('/favorite', [FavoriteController::class, 'index'])->name('favorite.index');
+    Route::post('/favorite/save', [FavoriteController::class, 'store'])->name('favorite.store');
+    Route::delete('/favorite/{id}', [FavoriteController::class, 'destroy'])->name('favorite.destroy');
 
     // Spotify actions
-    Route::post('/spotify/save-track', [SpotifyController::class, 'saveTrack']);
     Route::get('/spotify/recommendation/{mood}', [SpotifyController::class, 'searchTracks']);
 });
 
 Route::get('/dashboard-mood', [MoodController::class, 'dashboard']);
+
+/*
+|--------------------------------------------------------------------------
+| Route Admin CRUD
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminMoodController::class, 'dashboard'])->name('dashboard');
+    Route::resource('moods', AdminMoodController::class);
+});
 
 require __DIR__.'/auth.php';

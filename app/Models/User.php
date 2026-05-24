@@ -25,10 +25,12 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'role',
         'password',
         'spotify_id',
         'spotify_token',
         'spotify_refresh_token',
+        'spotify_token_expires_at',
         'avatar'
     ];
 
@@ -42,7 +44,16 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'spotify_token_expires_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Check if user is an admin.
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
     }
 
     public function moodLogs()

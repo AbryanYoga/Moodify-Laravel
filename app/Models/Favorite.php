@@ -7,8 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Favorite extends Model
 {
     protected $fillable = [
-        'playlist',
-        'user_id'
+        'user_id',
+        'spotify_track_id',
+        'track_name',
+        'artist_name',
+        'album_image',
+        'spotify_url'
     ];
 
     public function user()

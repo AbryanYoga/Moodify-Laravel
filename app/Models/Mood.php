@@ -6,7 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Mood extends Model
 {
-    protected $fillable = ['nama'];
+    protected $fillable = [
+        'nama', 
+        'genre', 
+        'image', 
+        'description', 
+        'color_theme'
+    ];
 
     public function playlists()
     {

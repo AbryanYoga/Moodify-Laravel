@@ -91,7 +91,13 @@ function renderTracks(tracks) {
                     <a href="${track.external_urls.spotify}" target="_blank" class="btn-play" title="Play di Spotify">
                         <i class="ph-fill ph-play"></i>
                     </a>
-                    <button class="btn-save" data-track-id="${track.id}" onclick="saveTrack(this)">
+                    <button class="btn-save" 
+                        data-track-id="${track.id}"
+                        data-track-name="${track.name}"
+                        data-artist-name="${artists}"
+                        data-album-image="${coverUrl}"
+                        data-spotify-url="${track.external_urls.spotify}"
+                        onclick="saveTrack(this)">
                         <i class="ph ph-heart"></i> Save
                     </button>
                 </div>
@@ -134,44 +140,60 @@ function renderErrorState(title, message, isAuthError = false) {
 
 async function saveTrack(btn) {
     const trackId = btn.getAttribute('data-track-id');
+    const trackName = btn.getAttribute('data-track-name');
+    const artistName = btn.getAttribute('data-artist-name');
+    const albumImage = btn.getAttribute('data-album-image');
+    const spotifyUrl = btn.getAttribute('data-spotify-url');
+    
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     
     if (btn.classList.contains('saved') || btn.disabled) return;
     
     const originalContent = btn.innerHTML;
-    btn.innerHTML = '<i class="ph ph-spinner ph-spin"></i> Saving...';
+    
+    // Optimistic UI update
+    btn.innerHTML = '<i class="ph-fill ph-check-circle"></i> Saved';
+    btn.classList.add('saved');
     btn.disabled = true;
 
     try {
-        const response = await fetch('/spotify/save-track', {
+        const response = await fetch('/favorite/save', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': csrfToken,
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({ track_id: trackId })
+            body: JSON.stringify({ 
+                spotify_track_id: trackId,
+                track_name: trackName,
+                artist_name: artistName,
+                album_image: albumImage,
+                spotify_url: spotifyUrl
+            })
         });
 
         const data = await response.json();
 
         if (response.ok && data.success) {
-            btn.innerHTML = '<i class="ph-fill ph-check-circle"></i> Saved';
-            btn.classList.add('saved');
             showToast(data.message || 'Lagu berhasil disimpan!', 'success');
         } else {
             console.error('Save track failed:', data);
+            // Revert UI on failure
             btn.innerHTML = originalContent;
+            btn.classList.remove('saved');
             btn.disabled = false;
             showToast(data.message || 'Gagal menyimpan lagu', 'error');
             
             if (response.status === 401) {
-                setTimeout(() => window.location.href = '/auth/spotify', 2000);
+                setTimeout(() => window.location.href = '/login', 2000);
             }
         }
     } catch (error) {
         console.error('Save track exception:', error);
+        // Revert UI on network failure
         btn.innerHTML = originalContent;
+        btn.classList.remove('saved');
         btn.disabled = false;
         showToast('Terjadi kesalahan jaringan', 'error');
     }
