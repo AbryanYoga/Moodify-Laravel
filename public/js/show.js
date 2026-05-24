@@ -160,6 +160,7 @@ async function saveTrack(btn) {
             btn.classList.add('saved');
             showToast(data.message || 'Lagu berhasil disimpan!', 'success');
         } else {
+            console.error('Save track failed:', data);
             btn.innerHTML = originalContent;
             btn.disabled = false;
             showToast(data.message || 'Gagal menyimpan lagu', 'error');
@@ -169,6 +170,7 @@ async function saveTrack(btn) {
             }
         }
     } catch (error) {
+        console.error('Save track exception:', error);
         btn.innerHTML = originalContent;
         btn.disabled = false;
         showToast('Terjadi kesalahan jaringan', 'error');

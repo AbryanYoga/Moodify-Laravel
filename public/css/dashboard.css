@@ -14,7 +14,7 @@
 }
 
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     background-color: var(--spotify-black);
     color: var(--text-primary);
     -webkit-font-smoothing: antialiased;

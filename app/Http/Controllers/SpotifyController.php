@@ -21,7 +21,8 @@ class SpotifyController extends Controller
             ->scopes([
                 'user-read-email',
                 'user-read-private',
-                'user-library-modify'
+                'user-library-modify',
+                'user-library-read'
             ])
             ->with(['show_dialog' => 'true'])
             ->redirect();
@@ -46,6 +47,7 @@ class SpotifyController extends Controller
                     'spotify_id' => $spotifyUser->id,
                     'avatar' => $spotifyUser->avatar,
                     'spotify_token' => $spotifyUser->token,
+                    'spotify_refresh_token' => $spotifyUser->refreshToken,
                     'password' => bcrypt(Str::random(24))
                 ]
             );
@@ -118,10 +120,24 @@ class SpotifyController extends Controller
 
             // Jika error 401 (Token Expired/Invalid)
             if ($response->status() == 401) {
+                $newToken = $this->refreshSpotifyToken(Auth::user());
+                if ($newToken) {
+                    $response = Http::withToken($newToken)
+                        ->get("https://api.spotify.com/v1/search?q={$query}&type=track&limit={$limit}");
+                    
+                    if ($response->successful()) {
+                        $tracks = $response->json()['tracks']['items'] ?? [];
+                        return response()->json([
+                            'success' => true,
+                            'data' => $tracks
+                        ]);
+                    }
+                }
+
                 Auth::user()->update(['spotify_token' => null]); // Invalidate token
                 return response()->json([
                     'success' => false,
-                    'message' => 'Sesi Spotify telah habis. Silakan login kembali.',
+                    'message' => 'Sesi Spotify tidak valid. Silakan login kembali.',
                     'status_code' => 401
                 ], 401);
             }
@@ -129,7 +145,7 @@ class SpotifyController extends Controller
             // Error lain dari Spotify
             return response()->json([
                 'success' => false,
-                'message' => 'Gagal mengambil data dari Spotify API.',
+                'message' => 'Gagal mengambil data dari Spotify API: ' . $response->body(),
                 'status_code' => $response->status()
             ], $response->status());
 
@@ -162,34 +178,87 @@ class SpotifyController extends Controller
         $token = Auth::user()->spotify_token;
 
         try {
+            $token = trim($token);
             $response = Http::withToken($token)
-                ->put("https://api.spotify.com/v1/me/tracks?ids={$trackId}");
+                ->put("https://api.spotify.com/v1/me/tracks", [
+                    'ids' => [$trackId]
+                ]);
 
-            if ($response->successful()) {
+            $statusCode = $response->status();
+            $bodyData = $response->json();
+            $isAuthError = in_array($statusCode, [401, 403]) || (isset($bodyData['error']['status']) && in_array($bodyData['error']['status'], [401, 403]));
+
+            if ($isAuthError) {
+                $newToken = $this->refreshSpotifyToken(Auth::user());
+                if ($newToken) {
+                    $response = Http::withToken($newToken)
+                        ->put("https://api.spotify.com/v1/me/tracks", [
+                            'ids' => [$trackId]
+                        ]);
+                        
+                    $statusCode = $response->status();
+                    $bodyData = $response->json();
+                    $isAuthError = in_array($statusCode, [401, 403]) || (isset($bodyData['error']['status']) && in_array($bodyData['error']['status'], [401, 403]));
+                }
+            }
+
+            if ($response->successful() || $statusCode == 200 || $statusCode == 201) {
                 return response()->json([
                     'success' => true, 
-                    'message' => 'Lagu berhasil disimpan!'
+                    'message' => 'Lagu berhasil disimpan ke Spotify!'
                 ]);
             }
 
-            if ($response->status() == 401) {
+            if ($isAuthError) {
+                Auth::user()->update(['spotify_token' => null]); // Invalidate token so they re-login
                 return response()->json([
                     'success' => false, 
-                    'message' => 'Sesi Spotify telah habis. Silakan login kembali.',
+                    'message' => 'Butuh otorisasi Spotify. Mengalihkan ke halaman login...',
                     'status_code' => 401
                 ], 401);
             }
 
             return response()->json([
                 'success' => false, 
-                'message' => 'Gagal menyimpan lagu ke Spotify.'
-            ], 400);
+                'message' => 'Spotify API Error (' . $statusCode . '): ' . $response->body()
+            ], $statusCode == 200 ? 400 : $statusCode);
 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false, 
-                'message' => 'Terjadi kesalahan pada server.'
+                'message' => 'Terjadi kesalahan pada server: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    /**
+     * Refresh Spotify Token
+     */
+    private function refreshSpotifyToken($user)
+    {
+        if (!$user->spotify_refresh_token) return false;
+
+        try {
+            $response = Http::asForm()->withHeaders([
+                'Authorization' => 'Basic ' . base64_encode(config('services.spotify.client_id') . ':' . config('services.spotify.client_secret'))
+            ])->post('https://accounts.spotify.com/api/token', [
+                'grant_type' => 'refresh_token',
+                'refresh_token' => $user->spotify_refresh_token,
+            ]);
+
+            if ($response->successful()) {
+                $data = $response->json();
+                $newToken = $data['access_token'];
+                $user->update([
+                    'spotify_token' => $newToken,
+                    'spotify_refresh_token' => $data['refresh_token'] ?? $user->spotify_refresh_token
+                ]);
+                return $newToken;
+            }
+        } catch (\Exception $e) {
+            // Log error silently
+        }
+        
+        return false;
     }
 }
