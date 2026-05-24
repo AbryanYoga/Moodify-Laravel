@@ -47,7 +47,10 @@
 
         <!-- Hero Section -->
         <div class="hero-mood">
-            <img src="{{ asset('images/'.$mood->image) }}" alt="{{ $mood->nama }}">
+            @php
+                $cleanImage = str_replace(['.jpg', "\r", "\n"], ['.png', '', ''], $mood->image);
+            @endphp
+            <img src="{{ asset('images/'.$cleanImage) }}" alt="{{ $mood->nama }}">
             <div class="hero-mood-info">
                 <div class="badge-mood">Mood: {{ $mood->nama }}</div>
                 <h1>{{ $mood->nama }}</h1>

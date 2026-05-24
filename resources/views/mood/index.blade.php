@@ -144,6 +144,8 @@
             elseif(str_contains($g, 'lo-fi') || str_contains($g, 'santai')) $emoji = '☕';
             elseif(str_contains($g, 'sedih') || str_contains($g, 'sad')) $emoji = '🌧️';
             elseif(str_contains($g, 'semangat') || str_contains($g, 'hype')) $emoji = '⚡';
+            
+            $cleanImage = str_replace(['.jpg', "\r", "\n"], ['.png', '', ''], $mood->image);
         @endphp
 
         <a href="/mood/{{ $mood->id }}"
@@ -153,7 +155,7 @@
 
                 <div class="mood-emoji">{{ $emoji }}</div>
 
-                <img src="{{ asset('images/'.$mood->image) }}"
+                <img src="{{ asset('images/'.$cleanImage) }}"
                      alt="{{ $mood->nama }}">
 
                 <div class="card-img-overlay"></div>

@@ -23,6 +23,7 @@ class SpotifyController extends Controller
                 'user-read-private',
                 'user-library-modify'
             ])
+            ->with(['show_dialog' => 'true'])
             ->redirect();
     }
 

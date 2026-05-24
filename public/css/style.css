@@ -561,7 +561,7 @@ body::after {
     background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
     color: #fff;
     border: none;
-    transform: rotate(-45deg) scale(1.1);
+    transform: scale(1.1);
     box-shadow: 0 5px 15px rgba(255, 117, 195, 0.4);
 }
 
