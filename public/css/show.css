@@ -415,11 +415,41 @@ body {
 /* ==========================================================================
    Responsive Mobile UI
    ========================================================================== */
+
+/* Tablet & Small Desktop (max-width: 1024px) */
+@media (max-width: 1024px) {
+    .container {
+        padding: 1.5rem;
+    }
+    
+    .hero-mood {
+        gap: 2rem;
+        padding: 2rem;
+    }
+    
+    .hero-mood img {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .hero-mood-info h1 {
+        font-size: 3.5rem;
+    }
+}
+
+/* Mobile Landscape & Tablet Portrait (max-width: 768px) */
 @media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    /* Hero Section */
     .hero-mood {
         flex-direction: column;
         text-align: center;
-        padding: 2rem 1.5rem;
+        padding: 1.5rem;
+        gap: 1.5rem;
+        border-radius: 1.5rem;
     }
     
     .hero-mood img {
@@ -429,18 +459,260 @@ body {
     
     .hero-mood-info h1 {
         font-size: 2.8rem;
+        letter-spacing: -0.02em;
     }
     
+    .hero-mood-info p {
+        font-size: 1rem;
+        max-width: 100%;
+    }
+    
+    .badge-mood {
+        font-size: 0.75rem;
+        padding: 0.35rem 0.9rem;
+    }
+    
+    /* Section Header */
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    /* Track Cards */
+    .track-card {
+        padding: 1rem;
+    }
+    
+    .track-left {
+        gap: 1rem;
+    }
+    
+    .track-cover {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .track-name {
+        font-size: 0.95rem;
+    }
+    
+    .track-artist {
+        font-size: 0.8rem;
+    }
+    
+    .track-right {
+        gap: 0.8rem;
+        margin-left: 0.5rem;
+    }
+    
+    .btn-play {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+    }
+    
+    .btn-save {
+        padding: 0.45rem 1rem;
+        font-size: 0.8rem;
+    }
+    
+    /* Toast */
+    .toast-container {
+        bottom: 1rem;
+        right: 1rem;
+        left: 1rem;
+    }
+    
+    .toast {
+        padding: 0.9rem 1.2rem;
+    }
+    
+    /* Empty State */
+    .empty-state {
+        padding: 3rem 1.5rem;
+        border-radius: 1.5rem;
+    }
+    
+    .empty-state i {
+        font-size: 3rem;
+    }
+    
+    .empty-state h3 {
+        font-size: 1.3rem;
+    }
+}
+
+/* Mobile Portrait (max-width: 480px) */
+@media (max-width: 480px) {
+    .container {
+        padding: 0.75rem;
+    }
+    
+    /* Navbar */
+    div[style*="display: flex"][style*="justify-content: space-between"] {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    /* Hero Section */
+    .hero-mood {
+        padding: 1.25rem;
+        gap: 1.25rem;
+        border-radius: 1.25rem;
+        margin-bottom: 2rem;
+    }
+    
+    .hero-mood img {
+        width: 150px;
+        height: 150px;
+        border-radius: 1rem;
+    }
+    
+    .hero-mood-info h1 {
+        font-size: 2.2rem;
+        margin: 0.4rem 0;
+    }
+    
+    .hero-mood-info p {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+    
+    .badge-mood {
+        font-size: 0.7rem;
+        padding: 0.3rem 0.8rem;
+    }
+    
+    /* Section Header */
+    .section-header {
+        margin-bottom: 1.25rem;
+    }
+    
+    .section-title {
+        font-size: 1.3rem;
+    }
+    
+    #track-count {
+        font-size: 0.85rem;
+    }
+    
+    /* Track Cards - Stack vertically on small screens */
     .track-card {
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
-        padding: 1.2rem;
+        padding: 1rem;
+        border-radius: 0.875rem;
+    }
+    
+    .track-left {
+        width: 100%;
+        gap: 0.875rem;
+    }
+    
+    .track-cover {
+        width: 48px;
+        height: 48px;
+        border-radius: 0.5rem;
+    }
+    
+    .track-info {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .track-name {
+        font-size: 0.9rem;
+    }
+    
+    .track-artist {
+        font-size: 0.75rem;
     }
     
     .track-right {
-        margin-left: 0;
         width: 100%;
         justify-content: space-between;
+        margin-left: 0;
+        padding-top: 0.5rem;
+        border-top: 1px solid var(--card-border);
+    }
+    
+    .btn-play {
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+    }
+    
+    .btn-save {
+        padding: 0.4rem 0.9rem;
+        font-size: 0.75rem;
+        flex: 1;
+        justify-content: center;
+        max-width: 200px;
+    }
+    
+    /* Skeleton Cards */
+    .sk-card {
+        padding: 1rem;
+    }
+    
+    .sk-cover {
+        width: 48px;
+        height: 48px;
+        margin-right: 0.875rem;
+    }
+    
+    /* Toast */
+    .toast-container {
+        bottom: 0.75rem;
+        right: 0.75rem;
+        left: 0.75rem;
+    }
+    
+    .toast {
+        padding: 0.8rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .toast i {
+        font-size: 1.2rem;
+    }
+    
+    /* Empty State */
+    .empty-state {
+        padding: 2.5rem 1.25rem;
+        border-radius: 1.25rem;
+    }
+    
+    .empty-state i {
+        font-size: 2.5rem;
+        margin-bottom: 0.875rem;
+    }
+    
+    .empty-state h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.4rem;
+    }
+    
+    .empty-state p {
+        font-size: 0.9rem;
+        margin-bottom: 1.25rem;
+    }
+    
+    .btn-primary {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.9rem;
+    }
+    
+    /* Reduce background animation intensity on mobile */
+    .blur-bg {
+        opacity: 0.6;
+        animation: rotateBg 40s linear infinite;
     }
 }

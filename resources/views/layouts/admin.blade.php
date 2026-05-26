@@ -240,6 +240,130 @@
                 transform: translateY(0);
             }
         }
+
+        /* =====================
+           RESPONSIVE DESIGN
+           ===================== */
+        
+        /* Tablet (max-width: 1024px) */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 220px;
+            }
+            .main-content {
+                margin-left: 220px;
+            }
+            .content-area {
+                padding: 24px;
+            }
+        }
+
+        /* Mobile & Tablet Portrait (max-width: 768px) */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .sidebar-header {
+                padding: 20px;
+                font-size: 1.3rem;
+            }
+            .nav-links {
+                flex-direction: row;
+                padding: 16px 12px;
+                overflow-x: auto;
+                gap: 12px;
+            }
+            .nav-link {
+                white-space: nowrap;
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+            .sidebar-footer {
+                padding: 16px 20px;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .top-navbar {
+                height: 64px;
+                padding: 0 20px;
+            }
+            .page-title {
+                font-size: 1.1rem;
+            }
+            .content-area {
+                padding: 20px 16px;
+            }
+            .user-profile img {
+                width: 32px;
+                height: 32px;
+            }
+            .user-profile div {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Mobile Portrait (max-width: 480px) */
+        @media (max-width: 480px) {
+            .sidebar-header {
+                padding: 16px;
+                font-size: 1.2rem;
+                gap: 10px;
+            }
+            .nav-links {
+                padding: 12px 8px;
+                gap: 8px;
+            }
+            .nav-link {
+                padding: 8px 14px;
+                font-size: 0.85rem;
+                gap: 8px;
+            }
+            .sidebar-footer {
+                padding: 12px 16px;
+            }
+            .user-profile {
+                gap: 10px;
+            }
+            .user-profile img {
+                width: 28px;
+                height: 28px;
+            }
+            .user-profile div:first-of-type {
+                font-size: 0.8rem;
+            }
+            .user-profile div:last-of-type {
+                font-size: 0.75rem;
+            }
+            .top-navbar {
+                height: 56px;
+                padding: 0 16px;
+            }
+            .page-title {
+                font-size: 1rem;
+            }
+            .content-area {
+                padding: 16px 12px;
+            }
+            .btn {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+                gap: 6px;
+            }
+            .toast-container {
+                bottom: 16px;
+                right: 16px;
+                left: 16px;
+            }
+            .toast {
+                padding: 14px 20px;
+                font-size: 0.9rem;
+            }
+        }
     </style>
     @stack('styles')
 </head>

@@ -365,14 +365,154 @@
         .btn-confirm:hover { background: #e11d48; transform: scale(1.02); box-shadow: 0 8px 20px rgba(244, 63, 94, 0.3); }
 
         @media (max-width: 768px) {
-            .hero { flex-direction: column; align-items: center; text-align: center; padding: 2rem 1rem; }
-            .hero-cover { width: 180px; height: 180px; font-size: 4rem; }
-            .hero-title { font-size: 2.5rem; }
-            .hero-meta { justify-content: center; }
-            .track-header { display: none; }
-            .track-row { grid-template-columns: 30px 1fr 60px; padding: 12px 16px; }
-            .track-duration { display: none; }
-            .track-actions { opacity: 1; }
+            .hero { 
+                flex-direction: column; 
+                align-items: center; 
+                text-align: center; 
+                padding: 2rem 1rem; 
+                gap: 24px;
+            }
+            .hero-cover { 
+                width: 180px; 
+                height: 180px; 
+                font-size: 4rem; 
+            }
+            .hero-title { 
+                font-size: 2.5rem; 
+            }
+            .hero-meta { 
+                justify-content: center; 
+                flex-wrap: wrap;
+            }
+            .track-container {
+                padding: 0 1rem 3rem 1rem;
+            }
+            .track-header { 
+                display: none; 
+            }
+            .track-row { 
+                grid-template-columns: 30px 1fr 60px; 
+                padding: 12px 16px; 
+            }
+            .track-duration { 
+                display: none; 
+            }
+            .track-actions { 
+                opacity: 1; 
+            }
+            .empty-state {
+                padding: 4rem 1.5rem;
+                margin-top: 1rem;
+            }
+            .empty-state i {
+                font-size: 3rem;
+            }
+            .empty-state h3 {
+                font-size: 1.5rem;
+            }
+            .empty-state p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 1.5rem 0.75rem;
+                gap: 20px;
+            }
+            .hero-cover {
+                width: 150px;
+                height: 150px;
+                font-size: 3.5rem;
+                border-radius: 12px;
+            }
+            .hero-label {
+                font-size: 0.75rem;
+                margin-bottom: 8px;
+            }
+            .hero-title {
+                font-size: 2rem;
+                margin-bottom: 12px;
+            }
+            .hero-meta {
+                font-size: 0.9rem;
+            }
+            .track-container {
+                padding: 0 0.75rem 2rem 0.75rem;
+            }
+            .track-row {
+                grid-template-columns: 28px 1fr 50px;
+                padding: 10px 12px;
+                gap: 12px;
+            }
+            .track-index {
+                font-size: 0.9rem;
+            }
+            .track-cover {
+                width: 44px;
+                height: 44px;
+                border-radius: 6px;
+            }
+            .track-info-cell {
+                gap: 12px;
+            }
+            .track-name {
+                font-size: 0.95rem;
+            }
+            .track-artist {
+                font-size: 0.8rem;
+            }
+            .track-actions {
+                gap: 12px;
+            }
+            .btn-action {
+                font-size: 1.1rem;
+            }
+            .empty-state {
+                padding: 3rem 1rem;
+                border-radius: 16px;
+            }
+            .empty-state i {
+                font-size: 2.5rem;
+                margin-bottom: 1rem;
+            }
+            .empty-state h3 {
+                font-size: 1.3rem;
+                margin-bottom: 0.4rem;
+            }
+            .empty-state p {
+                font-size: 0.9rem;
+                margin-bottom: 1.5rem;
+            }
+            .btn-explore {
+                padding: 12px 28px;
+                font-size: 0.95rem;
+            }
+            .modal-content {
+                padding: 32px 24px;
+                max-width: 90%;
+            }
+            .modal-icon {
+                width: 64px;
+                height: 64px;
+                font-size: 2rem;
+                margin-bottom: 16px;
+            }
+            .modal-content h3 {
+                font-size: 1.3rem;
+            }
+            .modal-content p {
+                font-size: 0.9rem;
+            }
+            .modal-btn-group {
+                flex-direction: column;
+                gap: 12px;
+                margin-top: 24px;
+            }
+            .btn-cancel, .btn-confirm {
+                padding: 12px;
+                font-size: 0.95rem;
+            }
         }
     </style>
 </head>

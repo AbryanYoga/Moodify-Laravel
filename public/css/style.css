@@ -699,3 +699,359 @@ form { margin: 0; }
     font-weight: 500;
     letter-spacing: 1px;
 }
+
+/* =====================
+   RESPONSIVE DESIGN
+   ===================== */
+
+/* Tablet & Small Desktop (max-width: 1024px) */
+@media (max-width: 1024px) {
+    .container {
+        padding: 0 20px;
+    }
+    
+    .mood-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 24px;
+    }
+    
+    .hero-title {
+        font-size: clamp(40px, 7vw, 80px);
+    }
+}
+
+/* Mobile Landscape & Tablet Portrait (max-width: 768px) */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 16px;
+    }
+    
+    /* Navbar */
+    .navbar {
+        flex-direction: column;
+        gap: 16px;
+        padding: 16px 20px;
+        margin-top: 16px;
+        margin-bottom: 40px;
+    }
+    
+    .navbar-brand {
+        font-size: 22px;
+    }
+    
+    .nav-actions {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .btn-nav {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+    
+    .user-box {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+    
+    /* Hero Section */
+    .hero {
+        margin-bottom: 50px;
+        padding: 30px 0;
+    }
+    
+    .hero-eyebrow {
+        font-size: 11px;
+        padding: 6px 16px;
+    }
+    
+    .hero-title {
+        font-size: clamp(36px, 10vw, 60px);
+        letter-spacing: -2px;
+    }
+    
+    .hero-sub {
+        font-size: 16px;
+        padding: 0 10px;
+    }
+    
+    /* Search Bar */
+    .search-wrap {
+        margin-bottom: 60px;
+    }
+    
+    .search-inner {
+        padding: 6px 6px 6px 20px;
+    }
+    
+    .search-inner input {
+        font-size: 15px;
+    }
+    
+    .search-inner button {
+        padding: 10px 20px;
+        font-size: 13px;
+    }
+    
+    /* Section Header */
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 30px;
+    }
+    
+    .section-title {
+        font-size: 24px;
+    }
+    
+    /* Mood Grid */
+    .mood-grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 20px;
+    }
+    
+    .card-img-wrap {
+        height: 200px;
+    }
+    
+    .mood-emoji {
+        font-size: 28px;
+        width: 45px;
+        height: 45px;
+        top: 16px;
+        left: 16px;
+    }
+    
+    .card-body {
+        padding: 0 20px 20px;
+    }
+    
+    .card-name {
+        font-size: 20px;
+    }
+    
+    .card-arrow {
+        width: 40px;
+        height: 40px;
+        bottom: 20px;
+        right: 20px;
+        font-size: 18px;
+    }
+    
+    /* Footer */
+    .footer {
+        margin-top: 60px;
+        padding: 30px 0;
+        font-size: 13px;
+    }
+    
+    /* Hamburger Menu */
+    .dropdown-menu {
+        right: -10px;
+        min-width: 180px;
+    }
+}
+
+/* Mobile Portrait (max-width: 480px) */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 12px;
+    }
+    
+    /* Navbar */
+    .navbar {
+        padding: 12px 16px;
+        margin-top: 12px;
+        margin-bottom: 30px;
+        border-radius: 20px;
+    }
+    
+    .navbar-brand {
+        font-size: 20px;
+    }
+    
+    .nav-actions {
+        gap: 6px;
+    }
+    
+    .btn-nav {
+        padding: 7px 14px;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+    
+    .user-box {
+        padding: 7px 14px;
+        font-size: 12px;
+        max-width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    .btn-icon {
+        width: 34px;
+        height: 34px;
+        font-size: 14px;
+    }
+    
+    /* Hero Section */
+    .hero {
+        margin-bottom: 40px;
+        padding: 20px 0;
+    }
+    
+    .hero-eyebrow {
+        font-size: 10px;
+        padding: 6px 14px;
+        gap: 6px;
+    }
+    
+    .hero-title {
+        font-size: clamp(32px, 12vw, 50px);
+        letter-spacing: -1.5px;
+        margin-bottom: 20px;
+    }
+    
+    .hero-sub {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+    
+    /* Search Bar */
+    .search-wrap {
+        margin-bottom: 50px;
+    }
+    
+    .search-inner {
+        flex-direction: column;
+        padding: 12px;
+        gap: 10px;
+        border-radius: 20px;
+    }
+    
+    .search-inner input {
+        font-size: 14px;
+        padding: 8px 0;
+        text-align: center;
+    }
+    
+    .search-inner button {
+        width: 100%;
+        padding: 12px 20px;
+        font-size: 13px;
+    }
+    
+    /* Section Header */
+    .section-header {
+        margin-bottom: 24px;
+    }
+    
+    .section-title {
+        font-size: 20px;
+    }
+    
+    .section-count {
+        font-size: 12px;
+        padding: 5px 14px;
+    }
+    
+    /* Mood Grid */
+    .mood-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .mood-card {
+        border-radius: 24px;
+    }
+    
+    .card-img-wrap {
+        height: 180px;
+    }
+    
+    .mood-emoji {
+        font-size: 24px;
+        width: 40px;
+        height: 40px;
+        top: 12px;
+        left: 12px;
+    }
+    
+    .card-body {
+        padding: 0 18px 18px;
+        margin-top: -16px;
+    }
+    
+    .card-tag {
+        font-size: 11px;
+        padding: 5px 12px;
+        margin-bottom: 12px;
+    }
+    
+    .card-name {
+        font-size: 18px;
+    }
+    
+    .card-arrow {
+        width: 36px;
+        height: 36px;
+        bottom: 18px;
+        right: 18px;
+        font-size: 16px;
+    }
+    
+    /* Empty State */
+    .empty-state {
+        padding: 60px 20px;
+        border-radius: 20px;
+    }
+    
+    .empty-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+    }
+    
+    .empty-state h3 {
+        font-size: 22px;
+        margin-bottom: 10px;
+    }
+    
+    .empty-state p {
+        font-size: 14px;
+    }
+    
+    /* Footer */
+    .footer {
+        margin-top: 50px;
+        padding: 24px 0;
+        font-size: 12px;
+    }
+    
+    /* Hamburger Menu */
+    .dropdown-menu {
+        right: 0;
+        left: 0;
+        margin: 0 12px;
+        min-width: auto;
+    }
+    
+    .dropdown-item {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+    
+    /* Ambient Background - Reduce on mobile */
+    body::before, body::after {
+        filter: blur(100px);
+        opacity: 0.2;
+    }
+    
+    .waveform-bg {
+        height: 30vh;
+        opacity: 0.1;
+    }
+}

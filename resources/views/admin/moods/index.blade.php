@@ -211,6 +211,158 @@
         font-size: 2rem;
         margin: 0 auto 16px;
     }
+
+    /* =====================
+       RESPONSIVE DESIGN
+       ===================== */
+    
+    /* Tablet (max-width: 1024px) */
+    @media (max-width: 1024px) {
+        .mood-grid {
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+        }
+    }
+
+    /* Mobile & Tablet Portrait (max-width: 768px) */
+    @media (max-width: 768px) {
+        .header-actions {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 12px;
+        }
+        .search-filter {
+            flex-direction: column;
+            max-width: 100%;
+        }
+        .search-filter select {
+            max-width: 100%;
+        }
+        .mood-grid {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        .mood-image {
+            height: 140px;
+        }
+        .mood-content {
+            padding: 14px;
+        }
+        .mood-title {
+            font-size: 1rem;
+        }
+        .mood-desc {
+            font-size: 0.8rem;
+        }
+        .mood-actions {
+            padding-top: 14px;
+        }
+        .mood-actions .btn {
+            padding: 7px;
+            font-size: 0.8rem;
+        }
+        .modal-content {
+            padding: 28px 24px;
+            max-width: 90%;
+        }
+        .modal-icon {
+            width: 56px;
+            height: 56px;
+            font-size: 1.75rem;
+        }
+    }
+
+    /* Mobile Portrait (max-width: 480px) */
+    @media (max-width: 480px) {
+        .header-actions {
+            gap: 10px;
+        }
+        .search-filter {
+            gap: 10px;
+        }
+        .form-control {
+            padding: 9px 14px;
+            font-size: 0.9rem;
+        }
+        .mood-grid {
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+        .mood-card {
+            border-radius: 10px;
+        }
+        .mood-image {
+            height: 160px;
+        }
+        .mood-content {
+            padding: 12px;
+        }
+        .mood-genre {
+            font-size: 0.7rem;
+            margin-bottom: 3px;
+        }
+        .mood-title {
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+        }
+        .mood-desc {
+            font-size: 0.75rem;
+            margin-bottom: 12px;
+        }
+        .mood-actions {
+            padding-top: 12px;
+            gap: 6px;
+        }
+        .mood-actions .btn {
+            padding: 6px;
+            font-size: 0.75rem;
+        }
+        .empty-state {
+            padding: 36px 20px;
+        }
+        .empty-state i {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+        .empty-state h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+        .empty-state p {
+            font-size: 0.9rem;
+        }
+        .pagination-wrapper {
+            margin-top: 24px;
+        }
+        .page-link {
+            padding: 6px 10px;
+            font-size: 0.85rem;
+        }
+        .modal-content {
+            padding: 24px 20px;
+        }
+        .modal-icon {
+            width: 52px;
+            height: 52px;
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+        .modal-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+        }
+        .modal-content p {
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+        .modal-content form {
+            gap: 10px;
+        }
+        .modal-content .btn {
+            padding: 10px 16px;
+            font-size: 0.9rem;
+        }
+    }
 </style>
 @endpush
 

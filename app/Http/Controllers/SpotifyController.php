@@ -31,6 +31,7 @@ class SpotifyController extends Controller
                 'user-read-email',
                 'user-read-private',
             ])
+            ->with(['show_dialog' => 'true']) // Force show authorization dialog
             ->redirect();
     }
 
