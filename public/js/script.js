@@ -63,3 +63,19 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
+/* HAMBURGER MENU TOGGLE */
+function toggleMenu() {
+    const menu = document.getElementById('dropdownMenu');
+    menu.classList.toggle('show');
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(event) {
+    const hamburgerMenu = document.querySelector('.hamburger-menu');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    
+    if (hamburgerMenu && dropdownMenu && !hamburgerMenu.contains(event.target)) {
+        dropdownMenu.classList.remove('show');
+    }
+});

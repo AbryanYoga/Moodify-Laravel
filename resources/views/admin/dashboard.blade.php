@@ -141,7 +141,7 @@
     @if($latestMood)
     <div style="display: flex; gap: 24px; align-items: center; padding: 16px; background: rgba(0,0,0,0.3); border-radius: 12px;">
         @if($latestMood->image)
-            <img src="{{ asset('images/moods/'.$latestMood->image) }}" alt="Cover" style="width: 80px; height: 80px; border-radius: 8px; object-fit: cover;">
+            <img src="{{ asset('images/'.$latestMood->image) }}" alt="Cover" style="width: 80px; height: 80px; border-radius: 8px; object-fit: cover;">
         @else
             <div style="width: 80px; height: 80px; border-radius: 8px; background: var(--bg-card); display: flex; align-items: center; justify-content: center;">
                 <i class="ph ph-image" style="font-size: 2rem; color: var(--text-secondary);"></i>

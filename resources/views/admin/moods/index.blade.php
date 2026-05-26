@@ -247,7 +247,7 @@
     @forelse($moods as $mood)
         <div class="mood-card">
             @if($mood->image)
-                <img src="{{ asset('images/moods/'.$mood->image) }}" alt="{{ $mood->nama }}" class="mood-image" loading="lazy">
+                <img src="{{ asset('images/'.$mood->image) }}" alt="{{ $mood->nama }}" class="mood-image" loading="lazy">
             @else
                 <div class="mood-image">
                     <i class="ph ph-image" style="font-size: 3rem; color: var(--text-secondary);"></i>

@@ -1,120 +1,206 @@
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
-    <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
-                    </a>
-                </div>
+<style>
+    /* Phosphor Icons */
+    @import url('https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css');
+    @import url('https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css');
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                    
-                    <x-nav-link :href="route('favorite.index')" :active="request()->routeIs('favorite.index')">
-                        {{ __('Favorites') }}
-                    </x-nav-link>
-                </div>
-            </div>
+    .custom-navbar {
+        position: sticky;
+        top: 0;
+        width: 100%;
+        height: 72px;
+        background: rgba(9, 9, 11, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 2rem;
+        z-index: 1000;
+        font-family: 'Sora', 'Poppins', sans-serif;
+    }
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
+    .custom-nav-left {
+        display: flex;
+        align-items: center;
+        font-size: 1.5rem;
+        font-weight: 800;
+        letter-spacing: -0.05em;
+        color: #fff;
+        text-decoration: none;
+        gap: 8px;
+    }
 
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </button>
-                    </x-slot>
+    .custom-nav-left i {
+        color: #c026d3; /* gradient-1 */
+    }
 
-                    <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
-                        </x-dropdown-link>
+    .custom-nav-center {
+        display: flex;
+        gap: 32px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
 
-                        @if(Auth::user()->isAdmin())
-                            <x-dropdown-link :href="route('admin.dashboard')">
-                                {{ __('Admin Dashboard') }}
-                            </x-dropdown-link>
-                        @endif
+    .custom-nav-link {
+        color: #a1a1aa; /* text-secondary */
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        position: relative;
+        padding: 8px 0;
+    }
 
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
+    .custom-nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0%;
+        height: 2px;
+        background: linear-gradient(90deg, #c026d3, #db2777);
+        transition: width 0.3s ease;
+        border-radius: 2px;
+    }
 
-                            <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </x-dropdown-link>
-                        </form>
-                    </x-slot>
-                </x-dropdown>
-            </div>
+    .custom-nav-link:hover {
+        color: #fff;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
 
-            <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-        </div>
+    .custom-nav-link:hover::after,
+    .custom-nav-link.active::after {
+        width: 100%;
+    }
+
+    .custom-nav-link.active {
+        color: #fff;
+    }
+
+    .custom-nav-right {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .custom-user-name {
+        font-weight: 600;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #fff;
+    }
+
+    .custom-user-avatar {
+        width: 32px; height: 32px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #c026d3, #db2777);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.8rem; font-weight: 700; color: #fff;
+    }
+
+    .custom-btn-logout {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        color: #fff;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .custom-btn-logout:hover {
+        background: rgba(244, 63, 94, 0.1); /* danger with opacity */
+        border-color: rgba(244, 63, 94, 0.3);
+        color: #f43f5e;
+        box-shadow: 0 0 15px rgba(244, 63, 94, 0.2);
+    }
+
+    /* Mobile Menu */
+    .mobile-menu-btn {
+        display: none;
+        background: transparent;
+        border: none;
+        color: #fff;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+
+    .mobile-menu {
+        display: none;
+        position: absolute;
+        top: 72px;
+        left: 0;
+        width: 100%;
+        background: rgba(9, 9, 11, 0.95);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        flex-direction: column;
+        padding: 1rem 2rem;
+        gap: 16px;
+    }
+
+    .mobile-menu.active {
+        display: flex;
+    }
+
+    @media (max-width: 768px) {
+        .custom-nav-center { display: none; }
+        .custom-user-name span { display: none; }
+        .mobile-menu-btn { display: block; }
+        .custom-nav-right { gap: 12px; }
+        .custom-btn-logout span { display: none; }
+    }
+</style>
+
+<nav class="custom-navbar">
+    <a href="{{ url('/') }}" class="custom-nav-left">
+        <i class="ph-fill ph-music-notes"></i> Moodify
+    </a>
+    
+    <div class="custom-nav-center">
+        <a href="{{ url('/mood') }}" class="custom-nav-link {{ request()->is('mood') ? 'active' : '' }}">Home</a>
+        <a href="{{ url('/dashboard-mood') }}" class="custom-nav-link {{ request()->is('dashboard-mood') ? 'active' : '' }}">Dashboard</a>
+        <a href="{{ route('favorite.index') }}" class="custom-nav-link {{ request()->routeIs('favorite.index') ? 'active' : '' }}">Favorites</a>
     </div>
 
-    <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-
-            <x-responsive-nav-link :href="route('favorite.index')" :active="request()->routeIs('favorite.index')">
-                {{ __('Favorites') }}
-            </x-responsive-nav-link>
+    <div class="custom-nav-right">
+        @auth
+        <div class="custom-user-name">
+            <div class="custom-user-avatar">{{ substr(Auth::user()->name, 0, 1) }}</div>
+            <span>{{ Auth::user()->name }}</span>
         </div>
+        
+        <form method="POST" action="{{ route('logout') }}" style="margin:0;">
+            @csrf
+            <button type="submit" class="custom-btn-logout">
+                <i class="ph ph-sign-out"></i> <span>Logout</span>
+            </button>
+        </form>
+        @endauth
 
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
-
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-
-                @if(Auth::user()->isAdmin())
-                    <x-responsive-nav-link :href="route('admin.dashboard')">
-                        {{ __('Admin Dashboard') }}
-                    </x-responsive-nav-link>
-                @endif
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
-                </form>
-            </div>
-        </div>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <i class="ph ph-list"></i>
+        </button>
     </div>
 </nav>
+
+<div class="mobile-menu" id="mobileMenu">
+    <a href="{{ url('/mood') }}" class="custom-nav-link {{ request()->is('mood') ? 'active' : '' }}">Home</a>
+    <a href="{{ url('/dashboard-mood') }}" class="custom-nav-link {{ request()->is('dashboard-mood') ? 'active' : '' }}">Dashboard</a>
+    <a href="{{ route('favorite.index') }}" class="custom-nav-link {{ request()->routeIs('favorite.index') ? 'active' : '' }}">Favorites</a>
+</div>
+
+<script>
+    function toggleMobileMenu() {
+        document.getElementById('mobileMenu').classList.toggle('active');
+    }
+</script>

@@ -49,15 +49,9 @@
 
         </a>
 
-        <a href="/dashboard-mood"
-           class="btn-nav primary">
-
-            Dashboard →
-
-        </a>
-
         <form action="/logout"
-              method="POST">
+              method="POST"
+              style="display: inline;">
 
             @csrf
 
@@ -69,6 +63,20 @@
             </button>
 
         </form>
+
+        <!-- Menu Hamburger untuk Admin -->
+        <div class="hamburger-menu">
+            <button class="btn-icon hamburger-btn" onclick="toggleMenu()" title="Menu">
+                <span>☰</span>
+            </button>
+            <div class="dropdown-menu" id="dropdownMenu">
+                @if(auth()->user()->isAdmin())
+                    <a href="/admin/dashboard" class="dropdown-item">
+                        <span>⚙️</span> Admin Dashboard
+                    </a>
+                @endif
+            </div>
+        </div>
 
     @else
 

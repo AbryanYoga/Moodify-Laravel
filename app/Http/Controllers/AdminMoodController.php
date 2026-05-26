@@ -87,8 +87,8 @@ class AdminMoodController extends Controller
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $filename = time() . '_' . $file->getClientOriginalName();
-            // Simpan ke public/images/moods
-            $file->move(public_path('images/moods'), $filename);
+            // Simpan ke public/images (bukan public/images/moods)
+            $file->move(public_path('images'), $filename);
             $validated['image'] = $filename;
         }
 
@@ -120,13 +120,13 @@ class AdminMoodController extends Controller
 
         if ($request->hasFile('image')) {
             // Hapus gambar lama jika ada
-            if ($mood->image && File::exists(public_path('images/moods/' . $mood->image))) {
-                File::delete(public_path('images/moods/' . $mood->image));
+            if ($mood->image && File::exists(public_path('images/' . $mood->image))) {
+                File::delete(public_path('images/' . $mood->image));
             }
 
             $file = $request->file('image');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('images/moods'), $filename);
+            $file->move(public_path('images'), $filename);
             $validated['image'] = $filename;
         }
 
@@ -141,8 +141,8 @@ class AdminMoodController extends Controller
     public function destroy(Mood $mood)
     {
         // Hapus gambar lama jika ada
-        if ($mood->image && File::exists(public_path('images/moods/' . $mood->image))) {
-            File::delete(public_path('images/moods/' . $mood->image));
+        if ($mood->image && File::exists(public_path('images/' . $mood->image))) {
+            File::delete(public_path('images/' . $mood->image));
         }
 
         $mood->delete();

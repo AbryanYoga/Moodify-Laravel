@@ -57,113 +57,6 @@
             pointer-events: none;
         }
 
-        /* Custom Navbar */
-        .navbar {
-            position: sticky;
-            top: 0;
-            width: 100%;
-            height: 72px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 2rem;
-            z-index: 100;
-        }
-
-        .nav-left {
-            display: flex;
-            align-items: center;
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: -0.05em;
-            color: #fff;
-            text-decoration: none;
-            gap: 8px;
-        }
-
-        .nav-left i {
-            color: var(--gradient-1);
-        }
-
-        .nav-center {
-            display: flex;
-            gap: 32px;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .nav-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: color 0.2s, text-shadow 0.2s;
-        }
-
-        .nav-link:hover, .nav-link.active {
-            color: #fff;
-            text-shadow: 0 0 10px rgba(255,255,255,0.3);
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .user-name {
-            font-weight: 600;
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .user-avatar {
-            width: 32px; height: 32px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.8rem; font-weight: 700;
-        }
-
-        .btn-nav-icon {
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 1.25rem;
-            cursor: pointer;
-            transition: color 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .btn-nav-icon:hover { color: #fff; }
-
-        .btn-logout {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border);
-            color: #fff;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .btn-logout:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: rgba(255,255,255,0.2);
-        }
-
         /* Hero Section */
         .hero {
             display: flex;
@@ -480,7 +373,6 @@
             .track-row { grid-template-columns: 30px 1fr 60px; padding: 12px 16px; }
             .track-duration { display: none; }
             .track-actions { opacity: 1; }
-            .nav-center { display: none; }
         }
     </style>
 </head>
@@ -488,31 +380,7 @@
 
     <div class="ambient-bg"></div>
 
-    <!-- Custom Navbar -->
-    <nav class="navbar">
-        <a href="{{ url('/') }}" class="nav-left">
-            <i class="ph-fill ph-music-notes"></i> Moodify
-        </a>
-        
-        <div class="nav-center">
-            <a href="{{ route('dashboard') }}" class="nav-link">Dashboard</a>
-            <a href="{{ route('favorite.index') }}" class="nav-link active">Favorites</a>
-        </div>
-
-        <div class="nav-right">
-            <div class="user-name">
-                <div class="user-avatar">{{ substr(Auth::user()->name, 0, 1) }}</div>
-                <span class="hidden sm:inline">{{ Auth::user()->name }}</span>
-            </div>
-            
-            <form method="POST" action="{{ route('logout') }}" style="margin:0;">
-                @csrf
-                <button type="submit" class="btn-logout">
-                    <i class="ph ph-sign-out"></i> <span class="hidden sm:inline">Logout</span>
-                </button>
-            </form>
-        </div>
-    </nav>
+    @include('layouts.navigation')
 
     <!-- Hero Section -->
     <div class="hero">
