@@ -23,7 +23,8 @@ User dapat memilih suasana hati seperti senang, galau, santai, fokus, dan mendap
 
 ## Home Page
 
-![Home Screenshot](public/screenshots/home_1.png)
+![Home 1](public/screenshots/home_1.png)
+![Home 2](public/screenshots/home_2.png)
 
 ---
 
@@ -35,7 +36,13 @@ User dapat memilih suasana hati seperti senang, galau, santai, fokus, dan mendap
 
 ## Favorites Page
 
-![Favorites Screenshot](public/screenshots/favorites.png)
+![Favorites Screenshot](public/screenshots/favorite.png)
+
+---
+
+## Admin Dashboard
+
+![Admin Dashboard](public/screenshots/dasboard_admin.png)
 
 ---
 
@@ -51,100 +58,123 @@ User dapat memilih suasana hati seperti senang, galau, santai, fokus, dan mendap
 
 ---
 
+# 🗄️ Database Schema & Architecture
+
+Berikut adalah visualisasi hubungan (ERD) dan penjelasan rinci struktur tabel database yang digunakan dalam aplikasi **Moodify**:
+
+## 📊 Entity Relationship Diagram (ERD)
+
+```mermaid
+erDiagram
+    USERS {
+        bigint id PK
+        string name
+        string email UK
+        string role
+        timestamp email_verified_at
+        string password
+        string remember_token
+        string spotify_id
+        text spotify_token
+        text spotify_refresh_token
+        timestamp spotify_token_expires_at
+        string avatar
+        timestamps created_at_updated_at
+    }
+
+    MOODS {
+        bigint id PK
+        string nama
+        string genre
+        string image
+        text description
+        string color_theme
+        timestamps created_at_updated_at
+    }
+
+    FAVORITES {
+        bigint id PK
+        bigint user_id FK
+        string spotify_track_id
+        string track_name
+        string artist_name
+        text album_image
+        text spotify_url
+        timestamps created_at_updated_at
+    }
+
+    USERS ||--o{ FAVORITES : "memiliki"
+```
+
+## 📋 Detail Struktur Tabel
+
+### 👤 1. Tabel `users`
+Tabel utama untuk menyimpan informasi pengguna lokal maupun integrasi akun Spotify.
+
+| Kolom | Tipe Data | Deskripsi |
+| :--- | :--- | :--- |
+| `id` 🔑 | `BIGINT UNSIGNED` | Primary Key, auto-increment unik untuk setiap user. |
+| `name` | `VARCHAR(255)` | Nama lengkap pengguna. |
+| `email` 📧 | `VARCHAR(255)` | Alamat email unik pengguna untuk login lokal. |
+| `role` 🎖️ | `VARCHAR(255)` | Peran pengguna (default: `user`, `admin` untuk akses dashboard). |
+| `email_verified_at` | `TIMESTAMP` | Waktu verifikasi email (jika ada). |
+| `password` 🔒 | `VARCHAR(255)` | Hash sandi keamanan pengguna untuk akun lokal. |
+| `remember_token` | `VARCHAR(100)` | Token sesi untuk fitur "Remember Me". |
+| `spotify_id` 🟢 | `VARCHAR(255)` | ID Akun Spotify unik dari proses OAuth. |
+| `spotify_token` | `TEXT` | Access Token Spotify yang aktif untuk memanggil API. |
+| `spotify_refresh_token` | `TEXT` | Refresh Token Spotify untuk memperbarui Access Token yang kedaluwarsa. |
+| `spotify_token_expires_at` | `TIMESTAMP` | Waktu kedaluwarsa dari Access Token Spotify saat ini. |
+| `avatar` 🖼️ | `VARCHAR(255)` | URL gambar profil pengguna (diambil dari Spotify). |
+| `created_at` | `TIMESTAMP` | Waktu pembuatan akun. |
+| `updated_at` | `TIMESTAMP` | Waktu terakhir pembaruan data akun. |
+
+---
+
+### 🎭 2. Tabel `moods`
+Menyimpan macam-macam suasana hati (mood) yang dapat dipilih beserta data asosiasi musiknya.
+
+| Kolom | Tipe Data | Deskripsi |
+| :--- | :--- | :--- |
+| `id` 🔑 | `BIGINT UNSIGNED` | Primary Key, auto-increment unik untuk setiap mood. |
+| `nama` 😄 | `VARCHAR(255)` | Nama suasana hati (contoh: *Senang, Galau, Santai, Fokus*). |
+| `genre` 🎵 | `VARCHAR(255)` | Genre musik utama yang terkait dengan mood tersebut. |
+| `image` 🖼️ | `VARCHAR(255)` | Path / file gambar ikon visual mood. |
+| `description` 📝 | `TEXT` | Deskripsi singkat mengenai suasana hati ini. |
+| `color_theme` 🎨 | `VARCHAR(255)` | Kode atau nama warna tema visual mood pada UI. |
+| `created_at` | `TIMESTAMP` | Waktu pembuatan data mood. |
+| `updated_at` | `TIMESTAMP` | Waktu terakhir pembaruan data mood. |
+
+---
+
+### ❤️ 3. Tabel `favorites`
+Menyimpan lagu-lagu kesukaan yang ditandai oleh pengguna dari API Spotify secara lokal.
+
+| Kolom | Tipe Data | Deskripsi |
+| :--- | :--- | :--- |
+| `id` 🔑 | `BIGINT UNSIGNED` | Primary Key, auto-increment unik untuk lagu favorit. |
+| `user_id` 🔗 | `BIGINT UNSIGNED` | Foreign Key menghubungkan ke tabel `users.id` (Cascade). |
+| `spotify_track_id` 🎶 | `VARCHAR(255)` | ID Track unik dari platform Spotify. |
+| `track_name` 🎼 | `VARCHAR(255)` | Judul lagu. |
+| `artist_name` 🎤 | `VARCHAR(255)` | Nama penyanyi / band pembuat lagu. |
+| `album_image` 💿 | `TEXT` | URL cover gambar album lagu. |
+| `spotify_url` 🌐 | `TEXT` | URL eksternal lagu langsung menuju Spotify Web Player. |
+| `created_at` | `TIMESTAMP` | Waktu lagu disimpan ke dalam favorit. |
+| `updated_at` | `TIMESTAMP` | Waktu pembaruan data lagu favorit. |
+
+---
+
+### ⏳ 4. Tabel Tambahan & Sistem
+Selain tabel utama di atas, database juga menyediakan beberapa tabel sistem bawaan Laravel untuk performansi:
+- **`mood_logs`**: Log catatan riwayat pemilihan mood user (`id`, `created_at`, `updated_at`).
+- **`playlists`**: Tabel relasi penampung playlist (`id`, `created_at`, `updated_at`).
+- **`password_reset_tokens`**: Token untuk mengatur ulang password akun lokal.
+- **`sessions`**: Penyimpanan sesi aktif pengguna agar aplikasi lebih cepat & aman.
+
+---
+
 # ⚙ Installation
 
 Clone repository:
 
 ```bash
-git clone https://github.com/USERNAME/Moodify-Laravel.git
-```
-
-Masuk ke folder project:
-
-```bash
-cd Moodify-Laravel
-```
-
-Install dependency:
-
-```bash
-composer install
-```
-
-Copy environment:
-
-```bash
-cp .env.example .env
-```
-
-Generate app key:
-
-```bash
-php artisan key:generate
-```
-
-Setup database di `.env`
-
-```env
-DB_DATABASE=moodify
-DB_USERNAME=root
-DB_PASSWORD=
-```
-
-Run migration:
-
-```bash
-php artisan migrate
-```
-
-Run server:
-
-```bash
-php artisan serve
-```
-
----
-
-# 🎧 Spotify API Setup
-
-Tambahkan Spotify credentials ke `.env`
-
-```env
-SPOTIFY_CLIENT_ID=your_client_id
-SPOTIFY_CLIENT_SECRET=your_client_secret
-SPOTIFY_REDIRECT_URI=http://127.0.0.1:8000/auth/spotify/callback
-```
-
----
-
-# 📂 Project Structure
-
-```bash
-app/
-resources/
-routes/
-public/
-database/
-```
-
----
-
-# 🚀 Future Improvements
-
-* AI mood detection
-* Playlist generation
-* Music player integration
-* Admin CRUD panel
-* Advanced recommendation system
-
----
-
-# 👨‍💻 Developer
-
-Made with music and sleep deprivation by Yoga Pratama.
-
----
-
-# 📜 License
-
-This project is for educational and portfolio purposes.
+git clone [https://github.com/USERNAME/Moodify-Laravel.git](https://github.com/USERNAME/Moodify-Laravel.git)
